@@ -1,0 +1,3 @@
+[submodule "Groupchat-frontend"]
+	path = Groupchat-frontend
+	url = https://github.com/shubhi182001/Groupchat-frontend.git
