@@ -25,32 +25,33 @@ app.get('/', (req, res) => {
 })
 
 //Adding new messages
-app.post('/messages/new', (req, res) => {
+app.post('/messages/new', async(req, res) => {
     const dbMessage = req.body;
     console.log(dbMessage);
-    Messages.create(dbMessage, (err, data) => {
-        if(err){
-            res.status(500).send(err);
-            console.log(err)
-        }
-        else{
-            console.log(data);
-            res.status(201).send(`new message created: \n ${data}`)
-        }
-    })
+    try{
+        const create = await Messages.create(dbMessage);
+        console.log(create);
+        res.status(201).send(`new message created: \n ${create}`)
+    }
+    catch(e){
+        console.log(e);
+        res.status(500).send(e);
+
+    }
 })
 
 //getting all the messages
-app.get('/messages/sync', (req, res) => {
-    Messages.find((err, data) => {
-        if(err){
-            res.send(500).send(err);
-        }
-        else{
-            console.log(data);
-            res.status(200).send(data);
-        }
-    })
+app.get('/messages/sync', async(req, res) => {
+
+    try{
+        const messages = await Messages.find({});
+        console.log(messages)
+        res.status(200).send(messages);
+        
+    }catch(e){
+        console.log(e);
+        res.status(400).send(e);
+    }
 })
 
 app.listen(port, () => {
